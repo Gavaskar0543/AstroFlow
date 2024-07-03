@@ -1,11 +1,35 @@
+// test/flowDistribution.test.js
+const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 const assert = require('assert');
-const FlowDistribution = require('../services/flowDistributionService');
-const Astrologer = require('../models/astrologerModel');
+const FlowDistribution = require('../Service/flowDistributionService');
+const Astrologer = require('../Model/astrologerModel');
 
 describe('FlowDistribution', function() {
+    this.timeout(10000); // Setting a higher timeout for potential async operations
+
+    let mongoServer;
+
+    before(async () => {
+        mongoServer = await MongoMemoryServer.create();
+        const uri = mongoServer.getUri();
+        await mongoose.connect(uri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+    });
+
+    after(async () => {
+        await mongoose.disconnect();
+        await mongoServer.stop();
+    });
+
+    beforeEach(async function() {
+        await Astrologer.deleteMany({});
+    });
+
     it('should allocate users fairly among astrologers', async function() {
         const flowDistribution = new FlowDistribution();
-        await Astrologer.deleteMany({}); // Clear the collection before the test
 
         const astrologer1 = new Astrologer({ name: 'Astrologer1' });
         const astrologer2 = new Astrologer({ name: 'Astrologer2' });

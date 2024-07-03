@@ -1,5 +1,5 @@
-const Astrologer = require('../models/astrologerModel');
-const logger = require('../config/logger');
+const Astrologer = require('../Model/astrologerModel');
+const logger = require('../Config/logger');
 
 exports.addAstrologer = async (req, res) => {
     const { name, isTopAstrologer } = req.body;

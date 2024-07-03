@@ -1,4 +1,4 @@
-const FlowDistribution = require('../Services/flowDistributionService');
+const FlowDistribution = require('../Service/flowDistributionService');
 const User = require('../Model/userModel');
 const logger = require('../Config/logger');
 
